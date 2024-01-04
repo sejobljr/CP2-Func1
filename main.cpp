@@ -5,69 +5,120 @@
 */ 
 
 #include <iostream>
-using namespace std;
+
+int MainMenu();
+int InputData(int, int&);
+int Add(int, int, char&);
+int Subtract(int, int, char&);
+int Multiply(int, int, char&);
+int Division(int, int, char&);
+char EndTrail();
+
 int main()
 {
-    int val1, val2, choice;
-    char continueChoice = 'y';
+    int val1 = 0, val2 = 0, choice, result = 0;
+    char action = '-';
 
     do
     {
         do
         {
-            cout
-                << "--- Please Select for Math Solution to use ---\n"
-                << "1. Add\n"
-                << "2. Subtract\n"
-                << "3. Multipliction\n"
-                << "4. Division\n"
-                << "\n"
-                << "Enter Choice: ";
-            cin >> choice;
-
-           	system("cls");
-
+            choice = MainMenu();
             switch (choice)
             {
             case 1:
-                cout << "Please input value 1:";
-                cin >> val1;
-                cout << "Please input value 2:";
-                cin >> val2;
-                cout << val1 << " + " << val2 << " = " << val1 + val2 << "\n";
+                result = Add( InputData(1, val1), InputData(2, val2), action );
                 break;
             case 2:
-                cout << "Please input value 1:";
-                cin >> val1;
-                cout << "Please input value 2:";
-                cin >> val2;
-                cout << val1 << " - " << val2 << " = " << val1 - val2 << "\n";
+                result = Subtract(
+                    InputData(1, val1),
+                    InputData(2, val2),
+                    action
+                );
                 break;
             case 3:
-                cout << "Please input value 1:";
-                cin >> val1;
-                cout << "Please input value 2:";
-                cin >> val2;
-                cout << val1 << " * " << val2 << " = " << val1 * val2 << "\n";
+                result = Multiply(
+                    InputData(1, val1),
+                    InputData(2, val2),
+                    action
+                );
                 break;
             case 4:
-                cout << "Please input value 1:";
-                cin >> val1;
-                cout << "Please input value 2:";
-                cin >> val2;
-                cout << val1 << " / " << val2 << " = " << val1 / val2 << "\n";
+                result = Division(
+                    InputData(1, val1),
+                    InputData(2, val2),
+                    action
+                );
                 break;
             default:
-                cout << "User Input Incorrect\n\n";
+                std::cout << "User Input Incorrect\n\n";
                 break;
             }
+
+            if (choice > 0 || choice < 5) std::cout << val1 << " " << action << " " << val2 << " = " << result << "\n";
         } while (choice < 0 || choice > 5);
 
-        cout << "Do you want to Contninue [y/n]:";
-        
-		cin >> continueChoice;
+    } while (EndTrail() == 'y');
+}
 
-       system("cls");
+int MainMenu()
+{
+    int choice;
 
-    } while (continueChoice == 'y');
+    std::cout
+        << "--- Please Select for Math Solution to use ---\n"
+        << "1. Add\n"
+        << "2. Subtract\n"
+        << "3. Multipliction\n"
+        << "4. Division\n"
+        << "\n"
+        << "Enter Choice: ";
+    std::cin >> choice;
+
+    std::system("cls");
+
+    return choice;
+}
+
+int InputData(int no, int& val)
+{
+    std::cout << "Please input value 1:";
+    std::cin >> val;
+    return val;
+}
+
+int Add(int x, int y, char& action)
+{
+    action = '+';
+    return x + y;
+}
+
+int Subtract(int x, int y, char& action)
+{
+    action = '-';
+    return x - y;
+}
+
+int Multiply(int x, int y, char& action)
+{
+    action = '*';
+    return x * y;
+}
+
+int Division(int x, int y, char& action)
+{
+    action = '/';
+    return x / y;
+}
+
+char EndTrail()
+{
+    char continueChoice = 'y';
+
+    std::cout << "Do you want to Contninue [y/n]:";
+    std::cin >> continueChoice;
+
+    std::system("cls");
+
+    return continueChoice;
 }
