@@ -1,0 +1,63 @@
+// Accept a value and add or subtract to the stored value of 1000
+// The user want to do continues transaction until stated to close.
+// Exit should exist in both initial "exit(0)"/return 0;  and end
+// stored = 1000
+
+/*
+* Naming Convention:
+* constant variable - Upper Snake Case
+* ex. const char VARIABLE_NAME = 'c';
+* variable - Camel Case
+* ex. int variableName;
+*       double variableNameNaMahaba;
+*   user defined function - Pascal Case
+*   ex. void FunctionName();
+* Naming should make sense
+* DRY - Don't repeat yourself
+* Single Responsibility Principle - One Function One Task
+* Construction of Code
+* constant variable
+* variable
+* code
+*/
+#include <iostream>
+#include <iomanip>
+int main(){
+    int val, stored = 1000, choice;
+    char ContinueChoice = 'Y';
+    char Endtrail();
+
+    do
+    { 
+    	std :: cout << "Enter a value: ";
+    	std :: cin >> val;
+    std :: cout
+        << "0. Exit\n"
+        << "1. Addition\n"
+        << "2. Subtraction\n"
+        << "\n"
+        << "Enter Choice: ";
+    std :: cin >> choice;
+
+    switch (choice) {
+    case 1:
+        stored += val;
+        break;
+    case 2:
+        stored -=val;
+        break;
+    case 3:
+         exit(0);
+    default:
+        std :: cout << "Invalid Choice. Please choose a valid choice\n";
+        break;
+    }
+    std :: cout << "The Stored value is: " << stored << "\n";
+    std :: cout << " Do you still wish to continue? [Y/N]\n";
+    std :: cin >> ContinueChoice;
+    }
+    while (ContinueChoice == 'y' || ContinueChoice == 'Y');
+
+    return 0;
+}
+
