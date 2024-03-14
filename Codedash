@@ -1,0 +1,133 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+const int MAX_GUESTS = 100;
+const int MAX_ROOMS = 50;
+
+// Structure for Guest
+struct Guest {
+    string name;
+    int age;
+    string email;
+};
+
+// Structure for Room
+struct Room {
+    int number;
+    bool isOccupied;
+    double price;
+};
+
+// Arrays to store guests and rooms
+Guest guests[MAX_GUESTS];
+Room rooms[MAX_ROOMS];
+
+int guestCount = 0;
+int roomCount = 0;
+
+// Function to add new guest
+void addGuest() {
+    if (guestCount >= MAX_GUESTS) {
+        cout << "Guest limit reached!" << endl;
+        return;
+    }
+
+    Guest newGuest;
+    cout << "Enter Guest Name: ";
+    getline(cin, newGuest.name);
+    cout << "Enter Guest Age: ";
+    cin >> newGuest.age;
+    cin.ignore(); // Clear the newline character from the input buffer
+    cout << "Enter Guest Email: ";
+    getline(cin, newGuest.email);
+
+    guests[guestCount++] = newGuest;
+    cout << "Guest added successfully!" << endl;
+}
+
+// Function to display all guests
+void displayGuests() {
+    cout << "----- Guests -----" << endl;
+    for (int i = 0; i < guestCount; ++i) {
+        cout << "Name: " << guests[i].name << ", Age: " << guests[i].age << ", Email: " << guests[i].email << endl;
+    }
+    cout << "-------------------" << endl;
+}
+
+// Function to add new room
+void addRoom() {
+    if (roomCount >= MAX_ROOMS) {
+        cout << "Room limit reached!" << endl;
+        return;
+    }
+
+    Room newRoom;
+    cout << "Enter Room Number: ";
+    cin >> newRoom.number;
+    cin.ignore(); // Clear the newline character from the input buffer
+    newRoom.isOccupied = false;
+    cout << "Enter Room Price: ";
+    cin >> newRoom.price;
+
+    rooms[roomCount++] = newRoom;
+    cout << "Room added successfully!" << endl;
+}
+
+// Function to display all rooms
+void displayRooms() {
+    cout << "----- Rooms -----" << endl;
+    for (int i = 0; i < roomCount; ++i) {
+        cout << "Room Number: " << rooms[i].number << ", Price: " << rooms[i].price;
+        if (rooms[i].isOccupied) {
+            cout << " (Occupied)" << endl;
+        } else {
+            cout << " (Available)" << endl;
+        }
+    }
+    cout << "-----------------" << endl;
+}
+
+// Main Menu function
+void mainMenu(Guest guests[], Room rooms[]) {
+    int choice;
+    do {
+        cout << "----- Resort and Beach Front Management -----" << endl;
+        cout << "1. Add Guest" << endl;
+        cout << "2. Display Guests" << endl;
+        cout << "3. Add Room" << endl;
+        cout << "4. Display Rooms" << endl;
+        cout << "0. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+        cin.ignore(); // Clear the newline character from the input buffer
+
+        switch (choice) {
+            case 1:
+                addGuest();
+                break;
+            case 2:
+                displayGuests();
+                break;
+            case 3:
+                addRoom();
+                break;
+            case 4:
+                displayRooms();
+                break;
+            case 0:
+                cout << "Exiting program. Thank you!" << endl;
+                break;
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+        }
+    } while (choice != 0);
+}
+
+int main() {
+    // Pass arrays by reference to mainMenu function
+    mainMenu(guests, rooms);
+
+    return 0;
+}
