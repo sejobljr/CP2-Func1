@@ -1,0 +1,116 @@
+#include <iostream>
+#include <string>
+
+// Struct for Customer
+struct Customer {
+    std::string name;
+    std::string checkIn;
+    std::string checkOut;
+};
+
+// Struct for Staff
+struct Staff {
+    std::string name;
+    std::string address;
+    std::string contact;
+    std::string role;
+    double salary;
+    std::string checkIn;
+    std::string checkOut;
+};
+
+// Function Prototypes
+void addCustomerRecord(Customer& customer);
+void addStaffRecord(Staff& staff);
+double calculateRoomPayment(int nights, double roomRate);
+double calculateTablePayment(int meals, double mealRate);
+void displayMainMenu();
+
+int main() {
+    Customer customer;
+    Staff staff;
+    int nights, meals;
+    double roomRate = 100.0; // Rate per night for the room
+    double mealRate = 20.0;  // Rate per meal
+
+    char choice;
+    do {
+        displayMainMenu();
+        std::cin >> choice;
+        switch (choice) {
+            case '1':
+                addCustomerRecord(customer);
+                break;
+            case '2':
+                addStaffRecord(staff);
+                break;
+            case '3':
+                std::cout << "Enter Number of Nights: ";
+                std::cin >> nights;
+                std::cout << "Room Payment: $" << calculateRoomPayment(nights, roomRate) << std::endl;
+                break;
+            case '4':
+                std::cout << "Enter Number of Meals: ";
+                std::cin >> meals;
+                std::cout << "Table Payment: $" << calculateTablePayment(meals, mealRate) << std::endl;
+                break;
+            case '5':
+                std::cout << "Exiting Program..." << std::endl;
+                break;
+            default:
+                std::cout << "Invalid choice. Please try again." << std::endl;
+                break;
+        }
+    } while (choice != '5');
+
+    return 0;
+}
+
+void displayMainMenu() {
+    std::cout << "------ Main Menu ------" << std::endl;
+    std::cout << "1. Add Customer Record" << std::endl;
+    std::cout << "2. Add Staff Record" << std::endl;
+    std::cout << "3. Calculate Room Payment" << std::endl;
+    std::cout << "4. Calculate Table Payment" << std::endl;
+    std::cout << "5. Exit" << std::endl;
+    std::cout << "Enter your choice: ";
+}
+
+void addCustomerRecord(Customer& customer) {
+    std::cout << "Enter Customer Name: ";
+    std::cin.ignore();
+    std::getline(std::cin, customer.name);
+    std::cout << "Enter Check In Time: ";
+    std::getline(std::cin, customer.checkIn);
+    std::cout << "Enter Check Out Time: ";
+    std::getline(std::cin, customer.checkOut);
+    std::cout << "Customer Record Added Successfully!" << std::endl;
+}
+
+void addStaffRecord(Staff& staff) {
+    std::cout << "Enter Staff Name: ";
+    std::cin.ignore();
+    std::getline(std::cin, staff.name);
+    std::cout << "Enter Address: ";
+    std::getline(std::cin, staff.address);
+    std::cout << "Enter Contact Number: ";
+    std::getline(std::cin, staff.contact);
+    std::cout << "Enter Role: ";
+    std::getline(std::cin, staff.role);
+    std::cout << "Enter Salary: ";
+    std::cin >> staff.salary;
+    std::cout << "Enter Check In Time: ";
+    std::cin.ignore();
+    std::getline(std::cin, staff.checkIn);
+    std::cout << "Enter Check Out Time: ";
+    std::getline(std::cin, staff.checkOut);
+    std::cout << "Staff Record Added Successfully!" << std::endl;
+}
+
+double calculateRoomPayment(int nights, double roomRate) {
+    return nights * roomRate;
+}
+
+double calculateTablePayment(int meals, double mealRate) {
+    return meals * mealRate;
+}
