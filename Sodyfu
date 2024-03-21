@@ -1,0 +1,122 @@
+#include <iostream>
+#include <string>
+#include <ctime>
+
+struct Pokemon {
+    std::string name;
+    int level;
+    int health;
+    Pokemon* next;
+
+    Pokemon(std::string newName, int newLevel) : name(newName), level(newLevel), health(newLevel * 10), next(nullptr) {}
+
+    void takeDamage(int damage) {
+        health -= damage;
+        if (health <= 0) {
+            std::cout << name << " fainted!" << std::endl;
+        }
+    }
+
+    void display() {
+        std::cout << "Name: " << name << std::endl;
+        std::cout << "Level: " << level << std::endl;
+        std::cout << "Health: " << health << std::endl;
+    }
+
+    int attack() {
+        return level * 2;
+    }
+};
+
+struct Player {
+    std::string name;
+    Pokemon* pokemonList;
+
+    Player(std::string newName) : name(newName), pokemonList(nullptr) {}
+
+    void addPokemon(Pokemon* newPokemon) {
+        if (!pokemonList) {
+            pokemonList = newPokemon;
+        } else {
+            Pokemon* temp = pokemonList;
+            while (temp->next) {
+                temp = temp->next;
+            }
+            temp->next = newPokemon;
+        }
+    }
+
+    void listPokemon() {
+        std::cout << name << "'s Pokemons:" << std::endl;
+        Pokemon* temp = pokemonList;
+        while (temp) {
+            temp->display();
+            temp = temp->next;
+        }
+    }
+
+    void attackEnemy(Player& enemy) {
+        srand(time(0)); // Seed for random number generator
+        Pokemon* attackingPokemon = getRandomPokemon();
+        if (attackingPokemon) {
+            int damage = attackingPokemon->attack();
+            std::cout << attackingPokemon->name << " attacks with " << damage << " damage!" << std::endl;
+
+            Pokemon* defendingPokemon = enemy.getRandomPokemon();
+            if (defendingPokemon) {
+                defendingPokemon->takeDamage(damage);
+            } else {
+                std::cout << enemy.name << " has no active Pokemon to defend!" << std::endl;
+            }
+        } else {
+            std::cout << name << " has no active Pokemon to attack!" << std::endl;
+        }
+    }
+
+    Pokemon* getRandomPokemon() {
+        if (!pokemonList) {
+            return nullptr;
+        }
+
+        srand(time(0)); // Seed for random number generator
+        int randomIndex = rand() % getPokemonCount();
+        Pokemon* temp = pokemonList;
+        for (int i = 0; i < randomIndex; i++) {
+            temp = temp->next;
+        }
+        return temp;
+    }
+
+    int getPokemonCount() {
+        int count = 0;
+        Pokemon* temp = pokemonList;
+        while (temp) {
+            count++;
+            temp = temp->next;
+        }
+        return count;
+    }
+};
+
+int main() {
+    Player player1("Ash");
+    Player player2("Gary");
+
+    Pokemon charmander("Charmander", 5);
+    Pokemon squirtle("Squirtle", 5);
+    Pokemon bulbasaur("Bulbasaur", 5);
+
+    player1.addPokemon(&charmander);
+    player1.addPokemon(&squirtle);
+    player2.addPokemon(&bulbasaur);
+
+    player1.listPokemon();
+    player2.listPokemon();
+
+    player1.attackEnemy(player2);
+
+    player1.listPokemon();
+    player2.listPokemon();
+
+    return 0;
+}
