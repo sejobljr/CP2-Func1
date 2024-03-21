@@ -1,0 +1,133 @@
+#include <iostream>
+#include <string>
+
+struct Pokemon {
+    std::string name;
+    int level;
+    std::string type;
+    std::string ability;
+    int hp;
+    int attack;
+    int defense;
+};
+
+struct PokemonNode {
+    Pokemon pokemon;
+    PokemonNode* next;
+};
+#include <iostream>
+#include <string>
+#include "PokemonNode.h" // Include the PokemonNode struct
+
+struct Trainer {
+    std::string name;
+    PokemonNode* pokemons = nullptr;
+};
+
+void catchPokemon(Trainer& trainer, const Pokemon& pokemon) {
+    PokemonNode* newPokemon = new PokemonNode{pokemon, nullptr};
+    
+    if (!trainer.pokemons) {
+        trainer.pokemons = newPokemon;
+    } else {
+        PokemonNode* current = trainer.pokemons;
+        while (current->next) {
+            current = current->next;
+        }
+        current->next = newPokemon;
+    }
+    
+    std::cout << trainer.name << " caught a new Pokemon!" << std::endl;
+}
+
+void displayTrainerPokemons(const Trainer& trainer) {
+    std::cout << trainer.name << "'s Pokemons:" << std::endl;
+    PokemonNode* current = trainer.pokemons;
+    while (current) {
+        std::cout << "Name: " << current->pokemon.name << std::endl;
+        std::cout << "Level: " << current->pokemon.level << std::endl;
+        std::cout << "Type: " << current->pokemon.type << std::endl;
+        std::cout << "Ability: " << current->pokemon.ability << std::endl;
+        std::cout << "HP: " << current->pokemon.hp << std::endl;
+        std::cout << "Attack: " << current->pokemon.attack << std::endl;
+        std::cout << "Defense: " << current->pokemon.defense << std::endl << std::endl;
+        current = current->next;
+    }
+}
+
+void trainTrainerPokemons(Trainer& trainer) {
+    PokemonNode* current = trainer.pokemons;
+    while (current) {
+        current->pokemon.level++;
+        std::cout << current->pokemon.name << " leveled up! New level: " << current->pokemon.level << std::endl;
+        current = current->next;
+    }
+}
+
+void showMenu() {
+    std::cout << "Menu:" << std::endl;
+    std::cout << "1. Catch a Pokemon" << std::endl;
+    std::cout << "2. Display Pokemons" << std::endl;
+    std::cout << "3. Train Pokemons" << std::endl;
+    std::cout << "4. Exit" << std::endl;
+}
+
+int getUserChoice() {
+    int choice;
+    std::cout << "Enter your choice: ";
+    std::cin >> choice;
+    return choice;
+}
+
+void handleChoice(Trainer& trainer) {
+    int choice = getUserChoice();
+    
+    switch (choice) {
+        case 1: {
+            std::string name, type, ability;
+            int level, hp, attack, defense;
+            
+            std::cout << "Enter Pokemon name: ";
+            std::cin >> name;
+            std::cout << "Enter Pokemon level: ";
+            std::cin >> level;
+            std::cout << "Enter Pokemon type: ";
+            std::cin >> type;
+            std::cout << "Enter Pokemon ability: ";
+            std::cin >> ability;
+            std::cout << "Enter Pokemon HP: ";
+            std::cin >> hp;
+            std::cout << "Enter Pokemon attack: ";
+            std::cin >> attack;
+            std::cout << "Enter Pokemon defense: ";
+            std::cin >> defense;
+            
+            Pokemon newPokemon = {name, level, type, ability, hp, attack, defense};
+            catchPokemon(trainer, newPokemon);
+            break;
+        }
+        case 2:
+            displayTrainerPokemons(trainer);
+            break;
+        case 3:
+            trainTrainerPokemons(trainer);
+            break;
+        case 4:
+            std::cout << "Exiting..." << std::endl;
+            exit(0);
+        default:
+            std::cout << "Invalid choice. Please try again." << std::endl;
+            break;
+    }
+}
+int main() {
+    Trainer ash = {"Ash", nullptr};
+    
+    while (true) {
+        showMenu();
+        handleChoice(ash);
+    }
+
+    return 0;
+}
+
